@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sfml-geometry-wars", "sfml-geometry-wars\sfml-geometry-wars.vcxproj", "{C7AB4FEA-09BC-4950-AA4B-6185A0F697CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C7AB4FEA-09BC-4950-AA4B-6185A0F697CE}.Debug|x64.ActiveCfg = Debug|x64
+		{C7AB4FEA-09BC-4950-AA4B-6185A0F697CE}.Debug|x64.Build.0 = Debug|x64
+		{C7AB4FEA-09BC-4950-AA4B-6185A0F697CE}.Debug|x86.ActiveCfg = Debug|Win32
+		{C7AB4FEA-09BC-4950-AA4B-6185A0F697CE}.Debug|x86.Build.0 = Debug|Win32
+		{C7AB4FEA-09BC-4950-AA4B-6185A0F697CE}.Release|x64.ActiveCfg = Release|x64
+		{C7AB4FEA-09BC-4950-AA4B-6185A0F697CE}.Release|x64.Build.0 = Release|x64
+		{C7AB4FEA-09BC-4950-AA4B-6185A0F697CE}.Release|x86.ActiveCfg = Release|Win32
+		{C7AB4FEA-09BC-4950-AA4B-6185A0F697CE}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {701D528A-225C-4845-A234-B15BD4C347E2}
+	EndGlobalSection
+EndGlobal
