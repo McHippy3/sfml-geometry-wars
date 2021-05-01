@@ -5,6 +5,9 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 
+#include "Enemy.h"
+#include "Player.h"
+
 class Game
 {
 private:
@@ -25,10 +28,14 @@ private:
     // Game logic
 
     // Game objects
+    Player* player;
 
     // Init functions
     void initVariables();
     void initWindow();
+
+    void initPlayer();
+    void initEnemies();
 
 public:
     // Constructors / Destructors

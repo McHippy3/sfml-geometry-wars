@@ -16,16 +16,29 @@ void Game::initWindow()
     this->window->setFramerateLimit(60);
 }
 
+void Game::initPlayer()
+{
+    this->player = new Player(0, 0);
+}
+
+void Game::initEnemies()
+{
+}
+
 // Constructors / Destructors
 Game::Game()
 {
     this->initVariables();
     this->initWindow();
+
+    this->initPlayer();
+    this->initEnemies();
 }
 
 Game::~Game()
 {
     delete this->window;
+    delete this->player;
 }
 
 void Game::updateSFMLEvents()
@@ -58,6 +71,10 @@ void Game::render()
         Renders the game objects
     */
     this->window->clear();
+
+    // Draw player
+    this->player->render(*this->window);
+
     this->window->display();
 }
 
