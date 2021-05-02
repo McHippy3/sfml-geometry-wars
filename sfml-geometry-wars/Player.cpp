@@ -4,6 +4,7 @@
 void Player::initVariables()
 {
     this->setHP(5);
+    this->setMovementSpeed(1);
 }
 
 void Player::initComponents()
@@ -22,7 +23,7 @@ Player::~Player()
 }
 
 // Functions
-void Player::update(const float& dt, sf::Vector2f& mouse_pos_view, const sf::View& view)
+void Player::update()
 {
 }
 

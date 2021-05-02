@@ -61,9 +61,35 @@ void Game::updateSFMLEvents()
     }
 }
 
+void Game::updateInput()
+{
+    // Player movement
+    float x = 0;
+    float y = 0;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    {
+        --y;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    {
+        ++y;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
+        --x;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
+        ++x;
+    }
+    this->player->move(x, y);
+}
+
 void Game::update()
 {
     this->updateSFMLEvents();
+    this->updateInput();
+    this->player->update();
 }
 
 void Game::render()

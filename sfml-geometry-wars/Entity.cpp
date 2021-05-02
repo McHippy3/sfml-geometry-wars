@@ -6,6 +6,7 @@
 void Entity::initVariables()
 {
     this->hp = 1;
+    this->movementSpeed = 1;
 }
 
 /**
@@ -34,6 +35,7 @@ void Entity::initSprite()
 */
 Entity::Entity(std::string textureFilePath)
 {
+    initVariables();
     initTexture(textureFilePath);
     initSprite();
 }
@@ -107,4 +109,14 @@ bool Entity::receiveDamage(const int damage)
         return false;
     }
     return true;
+}
+
+/**
+* Moves the entity
+* @param x the amount to move in the x direction
+* @param y the amount to move in the y direction
+*/
+void Entity::move(const float x, const float y)
+{
+    this->sprite.move(this->movementSpeed * x, this->movementSpeed * y);
 }

@@ -20,6 +20,6 @@ public:
     virtual ~Player();
 
     // Functions
-    void update(const float& dt, sf::Vector2f& mouse_pos_view, const sf::View& view);
+    void update();
     void render(sf::RenderTarget& target);
 };

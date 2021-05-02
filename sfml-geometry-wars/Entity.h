@@ -36,9 +36,12 @@ public:
     virtual void setPosition(const float x, const float y);
     void setMovementSpeed(const float movementSpeed);
     void setHP(const int hp);
+
+    // Functions
     bool receiveDamage(const int damage);
+    void move(const float x, const float y);
 
     // Pure virtual functions
-    virtual void update(const float& dt, sf::Vector2f& mouse_pos_view, const sf::View& view) = 0;
+    virtual void update() = 0;
     virtual void render(sf::RenderTarget& target) = 0;
 };
