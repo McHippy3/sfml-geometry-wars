@@ -4,6 +4,7 @@
 void Game::initVariables()
 {
     this->window = nullptr;
+    this->player = nullptr;
 }
 
 void Game::initWindow()
@@ -11,14 +12,14 @@ void Game::initWindow()
     this->videoMode.height = 720;
     this->videoMode.width = 1280;
 
-    this->window = new sf::RenderWindow(this->videoMode, "[PLACEHOLDER]", sf::Style::Titlebar | sf::Style::Close);
+    this->window = new sf::RenderWindow(this->videoMode, "Geometry Wars", sf::Style::Titlebar | sf::Style::Close);
 
     this->window->setFramerateLimit(60);
 }
 
 void Game::initPlayer()
 {
-    this->player = new Player(0, 0);
+    this->player = new Player(100, 100);
 }
 
 void Game::initEnemies()
@@ -60,6 +61,11 @@ void Game::updateSFMLEvents()
     }
 }
 
+void Game::update()
+{
+    this->updateSFMLEvents();
+}
+
 void Game::render()
 {
     /*
@@ -83,7 +89,7 @@ void Game::run()
 {
     while (this->window->isOpen())
     {
-        this->updateSFMLEvents();
+        this->update();
         this->render();
     }
 }

@@ -46,6 +46,7 @@ public:
 
     // Update
     void updateSFMLEvents();
+    void update();
 
     // Render
     void render();

@@ -3,6 +3,7 @@
 // Initializers
 void Player::initVariables()
 {
+    this->setHP(5);
 }
 
 void Player::initComponents()
