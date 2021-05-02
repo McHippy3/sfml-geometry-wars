@@ -30,7 +30,7 @@ void Entity::initSprite()
 }
 
 /**
-* Constructor
+* Constructs an Entity object
 * @param textureFilePath path to image file for entity texture
 */
 Entity::Entity(std::string textureFilePath)
@@ -41,7 +41,7 @@ Entity::Entity(std::string textureFilePath)
 }
 
 /**
-* Destructor
+* Destroys an Entity object
 */
 Entity::~Entity()
 {

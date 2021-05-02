@@ -1,12 +1,17 @@
 #include "Game.h"
 
-// Private functions
+/**
+* Initializes variables. Sets window and player to nullptr
+*/
 void Game::initVariables()
 {
     this->window = nullptr;
     this->player = nullptr;
 }
 
+/**
+* Initializes window to default settings
+*/
 void Game::initWindow()
 {
     this->videoMode.height = 720;
@@ -17,16 +22,24 @@ void Game::initWindow()
     this->window->setFramerateLimit(60);
 }
 
+/**
+* Initializes Player
+*/
 void Game::initPlayer()
 {
     this->player = new Player(100, 100);
 }
 
+/**
+* Initializes Enemies
+*/
 void Game::initEnemies()
 {
 }
 
-// Constructors / Destructors
+/**
+* Constructs a Game object
+*/
 Game::Game()
 {
     this->initVariables();
@@ -36,12 +49,18 @@ Game::Game()
     this->initEnemies();
 }
 
+/**
+* Destroys a Game object
+*/
 Game::~Game()
 {
     delete this->window;
     delete this->player;
 }
 
+/**
+* Updates game based on SFML specific events
+*/
 void Game::updateSFMLEvents()
 {    
     while (this->window->pollEvent(this->ev))
@@ -61,6 +80,9 @@ void Game::updateSFMLEvents()
     }
 }
 
+/**
+* Updates game based on user input such as key strokes and mouse clicks
+*/
 void Game::updateInput()
 {
     // Player movement
@@ -85,6 +107,13 @@ void Game::updateInput()
     this->player->move(x, y);
 }
 
+/**
+* Primary update function
+* - updates SFML events
+* - updates input
+* - updates player
+* - updates enemies
+*/
 void Game::update()
 {
     this->updateSFMLEvents();
@@ -92,16 +121,14 @@ void Game::update()
     this->player->update();
 }
 
+/**
+* Primary render function
+* - clear old frame
+* - renders objects
+* - display frame in window
+*/
 void Game::render()
 {
-    /*
-        @return void
-        - clear old frame
-        - render objects
-        - display frame in window
-
-        Renders the game objects
-    */
     this->window->clear();
 
     // Draw player
@@ -110,7 +137,10 @@ void Game::render()
     this->window->display();
 }
 
-// Core
+/**
+* Runs the game. Continuously updates and renders the window until it is 
+* closed
+*/
 void Game::run()
 {
     while (this->window->isOpen())
