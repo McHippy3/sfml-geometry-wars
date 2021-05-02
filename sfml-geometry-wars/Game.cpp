@@ -35,6 +35,7 @@ void Game::initPlayer()
 */
 void Game::initEnemies()
 {
+    this->enemy = new Enemy(200, 200, Enemy::EnemyType::BOSS);
 }
 
 /**
@@ -133,6 +134,7 @@ void Game::render()
 
     // Draw player
     this->player->render(*this->window);
+    this->enemy->render(*this->window);
 
     this->window->display();
 }

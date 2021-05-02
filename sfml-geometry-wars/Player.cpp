@@ -10,10 +10,12 @@ void Player::initVariables()
 }
 
 /**
-* Initializes components
+* Initializes the sprite with the texture of a ship
 */
-void Player::initComponents()
+void Player::initSprite()
 {
+    this->setTexture("textures/ship.jpg");
+    this->setSprite();
 }
 
 /**
@@ -21,9 +23,10 @@ void Player::initComponents()
 * @param x initial x coordinate
 * @param y initial y coordinate
 */
-Player::Player(float x, float y) : Entity("textures/ship.jpg")
+Player::Player(float x, float y)
 {
     this->initVariables();
+    this->initSprite();
     this->setPosition(x, y);
 }
 
@@ -35,17 +38,9 @@ Player::~Player()
 }
 
 /**
-* Primary update function
+* Updates the Player object
 */
 void Player::update()
 {
 }
 
-/**
-* Renders player on the window
-* @param target window to render player on
-*/
-void Player::render(sf::RenderTarget& target)
-{
-    target.draw(this->sprite);
-}

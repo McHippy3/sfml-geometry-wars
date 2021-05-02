@@ -9,8 +9,6 @@ class Entity
 {
 private:
     void initVariables();
-    void initTexture(std::string textureFilePath);
-    void initSprite();
 
     float movementSpeed;
 
@@ -22,10 +20,12 @@ protected:
 
 public:
     // Constructor / Destructor
-    Entity(std::string textureFilePath);
+    Entity();
     virtual ~Entity();
 
     // Component functions
+    void setTexture(std::string textureFilePath);
+    void setSprite();
 
     // Accessors
     virtual const sf::Vector2f& getPosition() const;
@@ -43,5 +43,5 @@ public:
 
     // Pure virtual functions
     virtual void update() = 0;
-    virtual void render(sf::RenderTarget& target) = 0;
+    void render(sf::RenderTarget& target);
 };

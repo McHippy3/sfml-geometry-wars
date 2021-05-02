@@ -8,11 +8,9 @@ class Player :
     public Entity
 {
 private:
-    // Variables
-    
     // Initializers
     void initVariables();
-    void initComponents();
+    void initSprite();
 
 public:
     // Constructor / Destructor
@@ -21,5 +19,4 @@ public:
 
     // Functions
     void update();
-    void render(sf::RenderTarget& target);
 };

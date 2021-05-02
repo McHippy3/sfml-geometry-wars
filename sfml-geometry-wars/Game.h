@@ -29,6 +29,7 @@ private:
 
     // Game objects
     Player* player;
+    Enemy* enemy;
 
     // Init functions
     void initVariables();

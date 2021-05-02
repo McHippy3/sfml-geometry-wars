@@ -10,34 +10,11 @@ void Entity::initVariables()
 }
 
 /**
-* Initializes texture. Loads in texture from file
-*/
-void Entity::initTexture(std::string textureFilePath)
-{
-    // Load a texture from file
-    if (!this->texture.loadFromFile(textureFilePath))
-    {
-        std::cout << "ERROR::ENTITY::INITTEXTURE::Could not load texture file." << "\n";
-    }
-}
-
-/**
-* Initializes sprite. Sets the texture of the sprite
-*/
-void Entity::initSprite()
-{
-    this->sprite.setTexture(this->texture);
-}
-
-/**
 * Constructs an Entity object
-* @param textureFilePath path to image file for entity texture
 */
-Entity::Entity(std::string textureFilePath)
+Entity::Entity()
 {
     initVariables();
-    initTexture(textureFilePath);
-    initSprite();
 }
 
 /**
@@ -47,6 +24,25 @@ Entity::~Entity()
 {
 }
 
+/**
+* Sets the texture of sprite 
+*/
+void Entity::setSprite()
+{
+    this->sprite.setTexture(this->texture);
+}
+
+/**
+* Sets texture. Loads in texture from file
+*/
+void Entity::setTexture(std::string textureFilePath)
+{
+    // Load a texture from file
+    if (!this->texture.loadFromFile(textureFilePath))
+    {
+        std::cout << "ERROR::ENTITY::INITTEXTURE::Could not load texture file." << "\n";
+    }
+}
 /**
 * @return sprite position
 */
@@ -119,4 +115,13 @@ bool Entity::receiveDamage(const int damage)
 void Entity::move(const float x, const float y)
 {
     this->sprite.move(this->movementSpeed * x, this->movementSpeed * y);
+}
+
+/**
+* Renders the entity on the window
+* @param target window to render entity on
+*/
+void Entity::render(sf::RenderTarget& target)
+{
+    target.draw(this->sprite);
 }
