@@ -25,7 +25,7 @@ Entity::~Entity()
 }
 
 /**
-* Sets the texture of sprite 
+* Sets the texture of sprite
 */
 void Entity::setSprite()
 {
@@ -100,7 +100,7 @@ void Entity::setHP(const int hp)
 bool Entity::receiveDamage(const int damage)
 {
     this->hp -= damage;
-    if (this->hp <= 0) 
+    if (this->hp <= 0)
     {
         return false;
     }
@@ -111,10 +111,13 @@ bool Entity::receiveDamage(const int damage)
 * Moves the entity
 * @param x the amount to move in the x direction
 * @param y the amount to move in the y direction
+* @param elapsedTime the amount of time elapsed since the last frame
 */
-void Entity::move(const float x, const float y)
+void Entity::move(const float x, const float y, sf::Time elapsedTime)
 {
-    this->sprite.move(this->movementSpeed * x, this->movementSpeed * y);
+    std::cout << elapsedTime.asMilliseconds() << std::endl;
+    this->sprite.move(this->movementSpeed * x * elapsedTime.asMilliseconds(), 
+        this->movementSpeed * y * elapsedTime.asMilliseconds());
 }
 
 /**

@@ -6,7 +6,7 @@
 void Player::initVariables()
 {
     this->setHP(5);
-    this->setMovementSpeed(1);
+    this->setMovementSpeed(0.5);
 }
 
 /**
@@ -14,7 +14,7 @@ void Player::initVariables()
 */
 void Player::initSprite()
 {
-    this->setTexture("textures/ship.jpg");
+    this->setTexture("textures/ship.png");
     this->setSprite();
 }
 

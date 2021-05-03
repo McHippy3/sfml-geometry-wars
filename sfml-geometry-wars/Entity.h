@@ -39,7 +39,7 @@ public:
 
     // Functions
     bool receiveDamage(const int damage);
-    void move(const float x, const float y);
+    void move(const float x, const float y, sf::Time elapsedTime);
 
     // Pure virtual functions
     virtual void update() = 0;

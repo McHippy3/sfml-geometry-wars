@@ -7,6 +7,7 @@ void Game::initVariables()
 {
     this->window = nullptr;
     this->player = nullptr;
+    this->dt = sf::microseconds(0);
     this->spawnTimer = 5;
     this->mouseHeld = false;
 }
@@ -102,7 +103,7 @@ void Game::updateKeyboardInput()
     {
         ++x;
     }
-    this->player->move(x, y);
+    this->player->move(x, y, dt);
 }
 
 /**
@@ -135,7 +136,7 @@ void Game::updateMousePositions()
 void Game::updateEnemies()
 {
     // Generate 
-    if (this->clock.getElapsedTime().asSeconds() >= this->spawnTimer)
+    if (this->clock.getElapsedTime().asSeconds() >= this->spawnTimer * enemies.size() + 1)
     {
         float x = static_cast<float> (rand() % static_cast<int> 
             (this->window->getSize().x));
@@ -143,7 +144,6 @@ void Game::updateEnemies()
             (this->window->getSize().y));
         Enemy::EnemyType et = static_cast<Enemy::EnemyType> (rand() % 3);
         this->enemies.push_back(new Enemy(x, y, et));
-        this->clock.restart();
     }
 }
 
@@ -193,5 +193,6 @@ void Game::run()
     {
         this->update();
         this->render();
+        this->dt = this->deltaClock.restart();
     }
 }

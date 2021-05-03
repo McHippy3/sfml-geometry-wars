@@ -26,7 +26,9 @@ private:
     // Text
 
     // Game logic
-    sf::Clock clock;
+    sf::Clock clock; //overall game clock
+    sf::Clock deltaClock; //only for framerate
+    sf::Time dt;
     int spawnTimer;
     bool mouseHeld;
 
