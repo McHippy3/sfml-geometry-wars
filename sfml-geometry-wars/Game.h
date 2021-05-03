@@ -26,32 +26,34 @@ private:
     // Text
 
     // Game logic
+    sf::Clock clock;
+    int spawnTimer;
+    bool mouseHeld;
 
     // Game objects
     Player* player;
-    Enemy* enemy;
+    std::vector<Enemy*> enemies;
 
     // Init functions
     void initVariables();
     void initWindow();
 
     void initPlayer();
-    void initEnemies();
+
+    // Update
+    void updateSFMLEvents();
+    void updateKeyboardInput();
+    void updateMousePositions();
+    void updateEnemies();
+    void update();
+
+    // Render
+    void render();
 
 public:
     // Constructors / Destructors
     Game();
     virtual ~Game();
-
-    // Accessors
-
-    // Update
-    void updateSFMLEvents();
-    void updateInput();
-    void update();
-
-    // Render
-    void render();
 
     // Core
     void run();

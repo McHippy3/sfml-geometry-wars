@@ -7,6 +7,8 @@ void Game::initVariables()
 {
     this->window = nullptr;
     this->player = nullptr;
+    this->spawnTimer = 5;
+    this->mouseHeld = false;
 }
 
 /**
@@ -31,14 +33,6 @@ void Game::initPlayer()
 }
 
 /**
-* Initializes Enemies
-*/
-void Game::initEnemies()
-{
-    this->enemy = new Enemy(200, 200, Enemy::EnemyType::BOSS);
-}
-
-/**
 * Constructs a Game object
 */
 Game::Game()
@@ -47,7 +41,6 @@ Game::Game()
     this->initWindow();
 
     this->initPlayer();
-    this->initEnemies();
 }
 
 /**
@@ -57,13 +50,17 @@ Game::~Game()
 {
     delete this->window;
     delete this->player;
+    for (auto* e : enemies)
+    {
+        delete e;
+    }
 }
 
 /**
 * Updates game based on SFML specific events
 */
 void Game::updateSFMLEvents()
-{    
+{
     while (this->window->pollEvent(this->ev))
     {
         switch (this->ev.type)
@@ -82,9 +79,9 @@ void Game::updateSFMLEvents()
 }
 
 /**
-* Updates game based on user input such as key strokes and mouse clicks
+* Updates game based on user input from keyboard
 */
-void Game::updateInput()
+void Game::updateKeyboardInput()
 {
     // Player movement
     float x = 0;
@@ -109,6 +106,48 @@ void Game::updateInput()
 }
 
 /**
+* Updates mousePosWindow and mousePosView. Outputs current mouse position to
+* console. 
+*/
+void Game::updateMousePositions()
+{
+    this->mousePosWindow = sf::Mouse::getPosition(*this->window);
+    this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow);
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        if (!this->mouseHeld)
+        {
+            this->mouseHeld = true;
+            std::cout << "MOUSE_POSITION: " << this->mousePosView.x << " " 
+                << this->mousePosView.y << std::endl;
+        }
+    }
+    else
+    {
+        this->mouseHeld = false;
+    }
+}
+
+/**
+* Updates enemies. Spawns enemies according to timer. Removes enemies with no
+* hp.
+*/
+void Game::updateEnemies()
+{
+    // Generate 
+    if (this->clock.getElapsedTime().asSeconds() >= this->spawnTimer)
+    {
+        float x = static_cast<float> (rand() % static_cast<int> 
+            (this->window->getSize().x));
+        float y = static_cast<float> (rand() % static_cast<int> 
+            (this->window->getSize().y));
+        Enemy::EnemyType et = static_cast<Enemy::EnemyType> (rand() % 3);
+        this->enemies.push_back(new Enemy(x, y, et));
+        this->clock.restart();
+    }
+}
+
+/**
 * Primary update function
 * - updates SFML events
 * - updates input
@@ -118,8 +157,10 @@ void Game::updateInput()
 void Game::update()
 {
     this->updateSFMLEvents();
-    this->updateInput();
+    this->updateMousePositions();
+    this->updateKeyboardInput();
     this->player->update();
+    this->updateEnemies();
 }
 
 /**
@@ -134,13 +175,16 @@ void Game::render()
 
     // Draw player
     this->player->render(*this->window);
-    this->enemy->render(*this->window);
+    for (auto* e : enemies)
+    {
+        e->render(*this->window);
+    }
 
     this->window->display();
 }
 
 /**
-* Runs the game. Continuously updates and renders the window until it is 
+* Runs the game. Continuously updates and renders the window until it is
 * closed
 */
 void Game::run()
