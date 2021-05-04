@@ -19,10 +19,10 @@ void Game::initVariables()
 */
 void Game::initWindow()
 {
-    this->videoMode.height = 720;
-    this->videoMode.width = 1280;
+    this->videoMode.width = Game::screenWidth;
+    this->videoMode.height = Game::screenHeight;
 
-    this->window = new sf::RenderWindow(this->videoMode, "Geometry Wars", 
+    this->window = new sf::RenderWindow(this->videoMode, "Geometry Wars",
         sf::Style::Titlebar | sf::Style::Close);
 
     this->window->setFramerateLimit(60);
@@ -53,7 +53,7 @@ void Game::initUIText()
     this->timerText.setFont(this->font);
     this->timerText.setCharacterSize(36);
     this->timerText.setFillColor(sf::Color::White);
-    this->timerText.setPosition(10, 10 + 10 + 
+    this->timerText.setPosition(10, 10 + 10 +
         this->scoreText.getLocalBounds().height);
     this->timerText.setString("0:00");
 }
@@ -129,19 +129,25 @@ void Game::updateKeyboardInput()
     // Player movement
     float x = 0;
     float y = 0;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && 
+        this->player->getPosition().y > 0)
     {
         --y;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) &&
+        this->player->getPosition().y + this->player->getTexture().getSize().y
+        < Game::screenHeight)
     {
         ++y;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
+        this->player->getPosition().x > 0)
     {
         --x;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) &&
+        this->player->getPosition().x + this->player->getTexture().getSize().x
+        < Game::screenWidth)
     {
         ++x;
     }
@@ -178,7 +184,7 @@ void Game::updateMousePositions()
 void Game::updateEnemies()
 {
     // Generate 
-    if ((this->clock.getElapsedTime() - this->lastSpawn).asSeconds() 
+    if ((this->clock.getElapsedTime() - this->lastSpawn).asSeconds()
         >= spawnTimer)
     {
         float x = static_cast<float> (rand() % static_cast<int>
@@ -192,13 +198,21 @@ void Game::updateEnemies()
 }
 
 /**
+* Updates the score based on the number of enemies killed
+*/
+void Game::updateScore()
+{
+    // TODO
+}
+
+/**
 * Updates the UI text elements, namely the timer and score counter
 */
 void Game::updateUIText()
 {
     std::stringstream ss;
     ss << std::setw(2) << std::setfill('0')
-        << static_cast<int>(this->clock.getElapsedTime().asSeconds() / 60) 
+        << static_cast<int>(this->clock.getElapsedTime().asSeconds() / 60)
         << ":" << std::setw(2) << std::setfill('0')
         << static_cast<int> (this->clock.getElapsedTime().asSeconds()) % 60;
 
@@ -223,9 +237,13 @@ void Game::update()
     this->updateMousePositions();
     this->player->update();
     this->updateEnemies();
+    this->updateScore();
     this->updateUIText();
 }
 
+/**
+* Renders all enemies onto the window
+*/
 void Game::renderEnemies()
 {
     for (auto* e : enemies)
@@ -234,6 +252,9 @@ void Game::renderEnemies()
     }
 }
 
+/**
+* Renders the text elements of the game onto the window
+*/
 void Game::renderUIText()
 {
     this->window->draw(this->scoreText);
