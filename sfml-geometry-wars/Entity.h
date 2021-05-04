@@ -29,6 +29,7 @@ public:
 
     // Accessors
     virtual const sf::Vector2f& getPosition() const;
+    const sf::Texture& getTexture() const;
     const float& getMovementSpeed() const;
     const int& getHP() const;
 
@@ -40,6 +41,7 @@ public:
     // Functions
     bool receiveDamage(const int damage);
     void move(const float x, const float y, sf::Time elapsedTime);
+    sf::Vector2f getCenter();
 
     // Pure virtual functions
     virtual void update() = 0;

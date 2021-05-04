@@ -20,17 +20,24 @@ void Game::initWindow()
     this->videoMode.height = 720;
     this->videoMode.width = 1280;
 
-    this->window = new sf::RenderWindow(this->videoMode, "Geometry Wars", sf::Style::Titlebar | sf::Style::Close);
+    this->window = new sf::RenderWindow(this->videoMode, "Geometry Wars", 
+        sf::Style::Titlebar | sf::Style::Close);
 
     this->window->setFramerateLimit(60);
 }
 
 /**
-* Initializes Player
+* Initializes Player in the center of the screen
 */
 void Game::initPlayer()
 {
-    this->player = new Player(100, 100);
+    this->player = new Player(0, 0);
+    sf::Vector2f centerPos = player->getCenter();
+    float x = static_cast<float> (this->window->getSize().x / 2.f
+        - centerPos.x);
+    float y = static_cast<float> (this->window->getSize().y / 2.f
+        - centerPos.y);
+    this->player->setPosition(x, y);
 }
 
 /**
@@ -108,7 +115,7 @@ void Game::updateKeyboardInput()
 
 /**
 * Updates mousePosWindow and mousePosView. Outputs current mouse position to
-* console. 
+* console.
 */
 void Game::updateMousePositions()
 {
@@ -119,7 +126,7 @@ void Game::updateMousePositions()
         if (!this->mouseHeld)
         {
             this->mouseHeld = true;
-            std::cout << "MOUSE_POSITION: " << this->mousePosView.x << " " 
+            std::cout << "MOUSE_POSITION: " << this->mousePosView.x << " "
                 << this->mousePosView.y << std::endl;
         }
     }
@@ -138,9 +145,9 @@ void Game::updateEnemies()
     // Generate 
     if (this->clock.getElapsedTime().asSeconds() >= this->spawnTimer * enemies.size() + 1)
     {
-        float x = static_cast<float> (rand() % static_cast<int> 
+        float x = static_cast<float> (rand() % static_cast<int>
             (this->window->getSize().x));
-        float y = static_cast<float> (rand() % static_cast<int> 
+        float y = static_cast<float> (rand() % static_cast<int>
             (this->window->getSize().y));
         Enemy::EnemyType et = static_cast<Enemy::EnemyType> (rand() % 3);
         this->enemies.push_back(new Enemy(x, y, et));

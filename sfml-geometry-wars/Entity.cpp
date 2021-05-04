@@ -51,6 +51,11 @@ const sf::Vector2f& Entity::getPosition() const
     return this->sprite.getPosition();
 }
 
+const sf::Texture& Entity::getTexture() const
+{
+    return *this->sprite.getTexture();
+}
+
 /**
 * @return movementSpeed
 */
@@ -115,9 +120,19 @@ bool Entity::receiveDamage(const int damage)
 */
 void Entity::move(const float x, const float y, sf::Time elapsedTime)
 {
-    std::cout << elapsedTime.asMilliseconds() << std::endl;
     this->sprite.move(this->movementSpeed * x * elapsedTime.asMilliseconds(), 
         this->movementSpeed * y * elapsedTime.asMilliseconds());
+}
+
+/**
+* Produces the x and y coordinates of the center of the entity's sprite relative
+* to the top left corner of the sprite
+* @return a 2 float vector containing x and y
+*/
+sf::Vector2f Entity::getCenter()
+{
+    return sf::Vector2f(this->getTexture().getSize().x / 2.f,
+        this->getTexture().getSize().y / 2.f);
 }
 
 /**
