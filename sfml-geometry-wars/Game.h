@@ -1,5 +1,8 @@
 #pragma once
 
+#include <sstream>
+#include <iomanip>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -24,6 +27,9 @@ private:
     // Resources
 
     // Text
+    sf::Font font;
+    sf::Text timerText;
+    sf::Text scoreText;
 
     // Game logic
     sf::Clock clock; //overall game clock
@@ -40,6 +46,9 @@ private:
     void initVariables();
     void initWindow();
 
+    void initFont();
+    void initUIText();
+
     void initPlayer();
 
     // Update
@@ -47,9 +56,12 @@ private:
     void updateKeyboardInput();
     void updateMousePositions();
     void updateEnemies();
+    void updateUIText();
     void update();
 
     // Render
+    void renderEnemies();
+    void renderUIText();
     void render();
 
 public:

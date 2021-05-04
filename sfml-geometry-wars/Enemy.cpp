@@ -32,13 +32,13 @@ void Enemy::initSprite()
     switch (this->enemyType)
     {
     case Enemy::EnemyType::BASIC:
-        this->setTexture("textures/basic_enemy.png");
+        this->setTexture("Textures/basic_enemy.png");
         break;
     case Enemy::EnemyType::ADVANCED:
-        this->setTexture("textures/advanced_enemy.png");
+        this->setTexture("Textures/advanced_enemy.png");
         break;
     case Enemy::EnemyType::BOSS:
-        this->setTexture("textures/boss_enemy.png");
+        this->setTexture("Textures/boss_enemy.png");
         break;
     default:
         std::cout << "ERROR::ENEMY::INITSPRITE::Invalid enemyType." << "\n";

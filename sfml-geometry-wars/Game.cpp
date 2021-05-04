@@ -27,6 +27,36 @@ void Game::initWindow()
 }
 
 /**
+* Loads in font from file
+*/
+void Game::initFont()
+{
+    if (!this->font.loadFromFile("Fonts/PixelFont.ttf"))
+    {
+        std::cout << "ERROR::GAME::INITFONT::Failed to load font." << "\n";
+    }
+}
+
+/**
+* Initializes on screen text, i.e., HUD elements
+*/
+void Game::initUIText()
+{
+    this->scoreText.setFont(this->font);
+    this->scoreText.setCharacterSize(36);
+    this->scoreText.setFillColor(sf::Color::White);
+    this->scoreText.setPosition(10, 10);
+    this->scoreText.setString("Score: 0");
+
+    this->timerText.setFont(this->font);
+    this->timerText.setCharacterSize(36);
+    this->timerText.setFillColor(sf::Color::White);
+    this->timerText.setPosition(10, 10 + 10 + 
+        this->scoreText.getLocalBounds().height);
+    this->timerText.setString("0:00");
+}
+
+/**
 * Initializes Player in the center of the screen
 */
 void Game::initPlayer()
@@ -47,6 +77,9 @@ Game::Game()
 {
     this->initVariables();
     this->initWindow();
+
+    this->initFont();
+    this->initUIText();
 
     this->initPlayer();
 }
@@ -155,6 +188,17 @@ void Game::updateEnemies()
 }
 
 /**
+* Updates the UI text elements, namely the timer and score counter
+*/
+void Game::updateUIText()
+{
+    std::stringstream ss;
+    ss << std::setw(2) << std::setfill('0') << static_cast<int>(this->clock.getElapsedTime().asSeconds() / 60) << ":" << std::setw(2) << std::setfill('0') << static_cast<int> (this->clock.getElapsedTime().asSeconds()) % 60;
+
+    this->timerText.setString(ss.str());
+}
+
+/**
 * Primary update function
 * - updates SFML events
 * - updates input
@@ -164,10 +208,25 @@ void Game::updateEnemies()
 void Game::update()
 {
     this->updateSFMLEvents();
-    this->updateMousePositions();
     this->updateKeyboardInput();
+    this->updateMousePositions();
     this->player->update();
     this->updateEnemies();
+    this->updateUIText();
+}
+
+void Game::renderEnemies()
+{
+    for (auto* e : enemies)
+    {
+        e->render(*this->window);
+    }
+}
+
+void Game::renderUIText()
+{
+    this->window->draw(this->scoreText);
+    this->window->draw(this->timerText);
 }
 
 /**
@@ -180,12 +239,9 @@ void Game::render()
 {
     this->window->clear();
 
-    // Draw player
     this->player->render(*this->window);
-    for (auto* e : enemies)
-    {
-        e->render(*this->window);
-    }
+    this->renderEnemies();
+    this->renderUIText();
 
     this->window->display();
 }
