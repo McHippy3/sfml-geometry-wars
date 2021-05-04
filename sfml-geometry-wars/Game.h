@@ -35,7 +35,9 @@ private:
     sf::Clock clock; //overall game clock
     sf::Clock deltaClock; //only for framerate
     sf::Time dt;
-    int spawnTimer;
+    sf::Time lastSpawn;
+    unsigned spawnTimer;
+    unsigned score;
     bool mouseHeld;
 
     // Game objects

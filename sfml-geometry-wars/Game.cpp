@@ -8,7 +8,9 @@ void Game::initVariables()
     this->window = nullptr;
     this->player = nullptr;
     this->dt = sf::microseconds(0);
+    this->lastSpawn = sf::microseconds(0);
     this->spawnTimer = 5;
+    this->score = 0;
     this->mouseHeld = false;
 }
 
@@ -46,7 +48,7 @@ void Game::initUIText()
     this->scoreText.setCharacterSize(36);
     this->scoreText.setFillColor(sf::Color::White);
     this->scoreText.setPosition(10, 10);
-    this->scoreText.setString("Score: 0");
+    this->scoreText.setString("Score: 00000000");
 
     this->timerText.setFont(this->font);
     this->timerText.setCharacterSize(36);
@@ -176,7 +178,8 @@ void Game::updateMousePositions()
 void Game::updateEnemies()
 {
     // Generate 
-    if (this->clock.getElapsedTime().asSeconds() >= this->spawnTimer * enemies.size() + 1)
+    if ((this->clock.getElapsedTime() - this->lastSpawn).asSeconds() 
+        >= spawnTimer)
     {
         float x = static_cast<float> (rand() % static_cast<int>
             (this->window->getSize().x));
@@ -184,6 +187,7 @@ void Game::updateEnemies()
             (this->window->getSize().y));
         Enemy::EnemyType et = static_cast<Enemy::EnemyType> (rand() % 3);
         this->enemies.push_back(new Enemy(x, y, et));
+        this->lastSpawn = this->clock.getElapsedTime();
     }
 }
 
@@ -193,9 +197,16 @@ void Game::updateEnemies()
 void Game::updateUIText()
 {
     std::stringstream ss;
-    ss << std::setw(2) << std::setfill('0') << static_cast<int>(this->clock.getElapsedTime().asSeconds() / 60) << ":" << std::setw(2) << std::setfill('0') << static_cast<int> (this->clock.getElapsedTime().asSeconds()) % 60;
+    ss << std::setw(2) << std::setfill('0')
+        << static_cast<int>(this->clock.getElapsedTime().asSeconds() / 60) 
+        << ":" << std::setw(2) << std::setfill('0')
+        << static_cast<int> (this->clock.getElapsedTime().asSeconds()) % 60;
 
     this->timerText.setString(ss.str());
+
+    ss.str("");
+    ss << std::setw(8) << std::setfill('0') << this->score;
+    this->scoreText.setString(ss.str());
 }
 
 /**
