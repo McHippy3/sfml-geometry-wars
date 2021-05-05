@@ -29,5 +29,6 @@ public:
     virtual ~Enemy();
 
     // Functions
+    void moveTowardsPos(sf::Vector2f pos, sf::Time elapsedTime);
     void update();
 };

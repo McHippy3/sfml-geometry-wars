@@ -9,15 +9,15 @@ void Enemy::initVariables()
     {
     case Enemy::EnemyType::BASIC:
         this->setHP(10);
-        this->setMovementSpeed(3);
+        this->setMovementSpeed(0.1f);
         break;
     case Enemy::EnemyType::ADVANCED:
         this->setHP(30);
-        this->setMovementSpeed(1);
+        this->setMovementSpeed(0.2f);
         break;
     case Enemy::EnemyType::BOSS:
         this->setHP(100);
-        this->setMovementSpeed(2);
+        this->setMovementSpeed(0.1f);
         break;
     default:
         std::cout << "ERROR::ENEMY::INITVARIABLES::Invalid enemyType." << "\n";
@@ -62,6 +62,35 @@ Enemy::Enemy(float x, float y, Enemy::EnemyType et)
 */
 Enemy::~Enemy()
 {
+}
+
+/**
+* Move the entity towards the given position
+* @param pos the position that the enemy will move towards
+* @param elapsedTime the amount of time elapsed since the last frame
+*/
+void Enemy::moveTowardsPos(sf::Vector2f pos, sf::Time elapsedTime)
+{
+    float x = 0;
+    float y = 0;
+    sf::Vector2f currentPos = this->getPosition();
+    if (currentPos.x < pos.x)
+    {
+        x++;
+    }
+    else if (currentPos.x > pos.x)
+    {
+        x--;
+    }
+    if (currentPos.y < pos.y)
+    {
+        y++;
+    }
+    else if (currentPos.y > pos.y)
+    {
+        y--;
+    }
+    this->move(x, y, elapsedTime);
 }
 
 /**

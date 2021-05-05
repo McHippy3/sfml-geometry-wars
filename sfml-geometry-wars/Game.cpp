@@ -197,18 +197,25 @@ void Game::updateEnemies()
         this->lastSpawn = this->clock.getElapsedTime();
     }
 
+    // Remove enemies that contacted player, receive damage
     for (size_t i = 0; i < this->enemies.size(); ++i) 
     {
         if (this->enemies[i]->getSprite().getGlobalBounds().intersects(
             this->player->getSprite().getGlobalBounds()))
         {
             this->enemies.erase(this->enemies.begin() + i);
-            if (!this->player->receiveDamage(5))
+            if (!this->player->receiveDamage(1))
             {
-                // End game
+                // End game if player is dead
                 this->end();
             }
         }
+    }
+
+    // Move enemies towards player position
+    for (size_t i = 0; i < this->enemies.size(); ++i)
+    {
+        this->enemies[i]->moveTowardsPos(this->player->getPosition(), this->dt);
     }
 }
 
