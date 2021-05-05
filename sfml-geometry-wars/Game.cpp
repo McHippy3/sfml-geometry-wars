@@ -129,7 +129,7 @@ void Game::updateKeyboardInput()
     // Player movement
     float x = 0;
     float y = 0;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) &&
         this->player->getPosition().y > 0)
     {
         --y;
@@ -180,25 +180,54 @@ void Game::updateMousePositions()
 /**
 * Updates enemies. Spawns enemies according to timer. Removes enemies with no
 * hp. Checks to see if player made contact with any enemies and thus should
-* receive damage. 
+* receive damage.
 */
 void Game::updateEnemies()
 {
-    // Generate 
+    // Spawn in enemies from directly offscreen
     if ((this->clock.getElapsedTime() - this->lastSpawn).asSeconds()
         >= spawnTimer)
     {
+        Enemy::EnemyType et = static_cast<Enemy::EnemyType> (rand() % 3);
+        Enemy *e = new Enemy(0, 0, et);
         float x = static_cast<float> (rand() % static_cast<int>
             (this->window->getSize().x));
         float y = static_cast<float> (rand() % static_cast<int>
             (this->window->getSize().y));
-        Enemy::EnemyType et = static_cast<Enemy::EnemyType> (rand() % 3);
-        this->enemies.push_back(new Enemy(x, y, et));
+        
+        // Change enemy position to be offscreen
+        int spawnType = rand() % 4;
+        switch (spawnType)
+        {
+        case 0:
+            // North
+            y = static_cast<float> 
+                (-1 * static_cast<int> (e->getTexture().getSize().y));
+            break;
+        case 1:
+            // East
+            x = static_cast<float> (this->window->getSize().x);
+            break;
+        case 2:
+            // South
+            y = static_cast<float> (this->window->getSize().y);
+            break;
+        case 3:
+            // West
+            x = static_cast<float> 
+                (-1 * static_cast<int> (e->getTexture().getSize().x));
+            break;
+        default:
+            std::cout << "ERROR::GAME::UPDATEENEMIES::Invalid spawnType."
+                << "\n";
+        }
+        e->setPosition(x, y);
+        this->enemies.push_back(e);
         this->lastSpawn = this->clock.getElapsedTime();
     }
 
     // Remove enemies that contacted player, receive damage
-    for (size_t i = 0; i < this->enemies.size(); ++i) 
+    for (size_t i = 0; i < this->enemies.size(); ++i)
     {
         if (this->enemies[i]->getSprite().getGlobalBounds().intersects(
             this->player->getSprite().getGlobalBounds()))
@@ -315,7 +344,7 @@ void Game::run()
 }
 
 /**
-* Ends the game. Closes the window. 
+* Ends the game. Closes the window.
 */
 void Game::end()
 {
