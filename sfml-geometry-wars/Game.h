@@ -78,4 +78,5 @@ public:
 
     // Core
     void run();
+    void end();
 };

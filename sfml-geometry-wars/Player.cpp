@@ -15,7 +15,6 @@ void Player::initVariables()
 void Player::initSprite()
 {
     this->setTexture("Textures/ship.png");
-    this->setSprite();
 }
 
 /**

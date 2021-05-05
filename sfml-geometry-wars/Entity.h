@@ -25,11 +25,11 @@ public:
 
     // Component functions
     void setTexture(std::string textureFilePath);
-    void setSprite();
 
     // Accessors
     virtual const sf::Vector2f& getPosition() const;
     const sf::Texture& getTexture() const;
+    const sf::Sprite& getSprite() const;
     const float& getMovementSpeed() const;
     const int& getHP() const;
 

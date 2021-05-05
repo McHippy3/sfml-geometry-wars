@@ -25,22 +25,19 @@ Entity::~Entity()
 }
 
 /**
-* Sets the texture of sprite
-*/
-void Entity::setSprite()
-{
-    this->sprite.setTexture(this->texture);
-}
-
-/**
-* Sets texture. Loads in texture from file
+* Sets texture. Loads in texture from file and sets it to sprite
 */
 void Entity::setTexture(std::string textureFilePath)
 {
     // Load a texture from file
     if (!this->texture.loadFromFile(textureFilePath))
     {
-        std::cout << "ERROR::ENTITY::INITTEXTURE::Could not load texture file." << "\n";
+        std::cout << "ERROR::ENTITY::INITTEXTURE::Could not load texture file."
+            << "\n";
+    }
+    else
+    {
+        this->sprite.setTexture(this->texture, true);
     }
 }
 /**
@@ -51,9 +48,20 @@ const sf::Vector2f& Entity::getPosition() const
     return this->sprite.getPosition();
 }
 
+/**
+* @return texture of entity's sprite
+*/
 const sf::Texture& Entity::getTexture() const
 {
-    return *this->sprite.getTexture();
+    return this->texture;
+}
+
+/**
+* @return sprite of entity
+*/
+const sf::Sprite& Entity::getSprite() const
+{
+    return this->sprite;
 }
 
 /**
@@ -120,7 +128,7 @@ bool Entity::receiveDamage(const int damage)
 */
 void Entity::move(const float x, const float y, sf::Time elapsedTime)
 {
-    this->sprite.move(this->movementSpeed * x * elapsedTime.asMilliseconds(), 
+    this->sprite.move(this->movementSpeed * x * elapsedTime.asMilliseconds(),
         this->movementSpeed * y * elapsedTime.asMilliseconds());
 }
 

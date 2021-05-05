@@ -43,7 +43,6 @@ void Enemy::initSprite()
     default:
         std::cout << "ERROR::ENEMY::INITSPRITE::Invalid enemyType." << "\n";
     }
-    this->setSprite();
 }
 
 

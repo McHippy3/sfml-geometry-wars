@@ -114,7 +114,7 @@ void Game::updateSFMLEvents()
         case sf::Event::KeyPressed:
             if (this->ev.key.code == sf::Keyboard::Escape)
             {
-                this->window->close();
+                this->end();
             }
             break;
         }
@@ -179,7 +179,8 @@ void Game::updateMousePositions()
 
 /**
 * Updates enemies. Spawns enemies according to timer. Removes enemies with no
-* hp.
+* hp. Checks to see if player made contact with any enemies and thus should
+* receive damage. 
 */
 void Game::updateEnemies()
 {
@@ -194,6 +195,20 @@ void Game::updateEnemies()
         Enemy::EnemyType et = static_cast<Enemy::EnemyType> (rand() % 3);
         this->enemies.push_back(new Enemy(x, y, et));
         this->lastSpawn = this->clock.getElapsedTime();
+    }
+
+    for (size_t i = 0; i < this->enemies.size(); ++i) 
+    {
+        if (this->enemies[i]->getSprite().getGlobalBounds().intersects(
+            this->player->getSprite().getGlobalBounds()))
+        {
+            this->enemies.erase(this->enemies.begin() + i);
+            if (!this->player->receiveDamage(5))
+            {
+                // End game
+                this->end();
+            }
+        }
     }
 }
 
@@ -219,7 +234,7 @@ void Game::updateUIText()
     this->timerText.setString(ss.str());
 
     ss.str("");
-    ss << std::setw(8) << std::setfill('0') << this->score;
+    ss << "Score: " << std::setw(8) << std::setfill('0') << this->score;
     this->scoreText.setString(ss.str());
 }
 
@@ -290,4 +305,12 @@ void Game::run()
         this->render();
         this->dt = this->deltaClock.restart();
     }
+}
+
+/**
+* Ends the game. Closes the window. 
+*/
+void Game::end()
+{
+    this->window->close();
 }
