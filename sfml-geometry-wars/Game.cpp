@@ -198,19 +198,19 @@ void Game::updateEnemies()
         >= spawnTimer)
     {
         Enemy::EnemyType et = static_cast<Enemy::EnemyType> (rand() % 3);
-        Enemy *e = new Enemy(0, 0, et);
+        Enemy* e = new Enemy(0, 0, et);
         float x = static_cast<float> (rand() % static_cast<int>
             (this->window->getSize().x));
         float y = static_cast<float> (rand() % static_cast<int>
             (this->window->getSize().y));
-        
+
         // Change enemy position to be offscreen
         int spawnType = rand() % 4;
         switch (spawnType)
         {
         case 0:
             // North
-            y = static_cast<float> 
+            y = static_cast<float>
                 (-1 * static_cast<int> (e->getTexture().getSize().y));
             break;
         case 1:
@@ -223,7 +223,7 @@ void Game::updateEnemies()
             break;
         case 3:
             // West
-            x = static_cast<float> 
+            x = static_cast<float>
                 (-1 * static_cast<int> (e->getTexture().getSize().x));
             break;
         default:
@@ -258,21 +258,44 @@ void Game::updateEnemies()
 }
 
 /**
-* Updates all the bullets
+* Updates all the bullets. Moves all bullets towards target and checks for
+* collision with enemy. Removes offscreen bullets.
 */
 void Game::updateBullets()
 {
-    for (auto* b : bullets)
-    {
-        b->move(this->dt);
-    }
+    std::vector<int> removeList;
     for (int i = 0; i < bullets.size(); ++i)
     {
+        bool deleted = false;
+        bullets[i]->move(this->dt);
+        for (int j = 0; j < enemies.size(); ++j)
+        {
+            // Check for collision
+            if (enemies[j]->getSprite().getGlobalBounds().intersects(
+                bullets[i]->getCircle().getGlobalBounds()))
+            {
+                enemies.erase(enemies.begin() + j);
+                deleted = true;
+                break;
+            }
+        }
+        // Check for out of bounds
         if (bullets[i]->offBounds(*this->window))
         {
-            bullets.erase(bullets.begin() + i);
-            break;
+            deleted = true;
         }
+        // Add to remove list
+        if (deleted)
+        {
+            removeList.push_back(i);
+        }
+    }
+
+    // Remove deleted bullets
+    int removedCount = 0;
+    for (int i = 0; i < removeList.size(); ++i)
+    {
+        bullets.erase(bullets.begin() + i - removedCount);
     }
 }
 

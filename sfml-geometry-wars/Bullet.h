@@ -25,6 +25,9 @@ public:
     Bullet(sf::Vector2f startPos, sf::Vector2f target);
     virtual ~Bullet();
 
+    // Accessors
+    sf::CircleShape getCircle();
+
     // Functions
     sf::Vector2f getCenter();
     bool offBounds(sf::RenderTarget& window);

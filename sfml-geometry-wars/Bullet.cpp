@@ -76,6 +76,14 @@ Bullet::~Bullet()
 }
 
 /**
+* @return the circle of the bullet
+*/
+sf::CircleShape Bullet::getCircle()
+{
+    return this->circle;
+}
+
+/**
 * @return the coordinates of the center of the bullet
 */
 sf::Vector2f Bullet::getCenter()
