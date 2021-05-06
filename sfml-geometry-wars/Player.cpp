@@ -7,6 +7,7 @@ void Player::initVariables()
 {
     this->setHP(5);
     this->setMovementSpeed(0.5);
+    this->firingRate = 100;
 }
 
 /**
@@ -34,6 +35,22 @@ Player::Player(float x, float y)
 */
 Player::~Player()
 {
+}
+
+/**
+* @return the player's firing rate in milliseconds
+*/
+unsigned Player::getFiringRate()
+{
+    return this->firingRate;
+}
+
+/**
+* @param firingRate the new firingRate in milliseconds
+*/
+void Player::setFiringRate(unsigned firingRate)
+{
+    this->firingRate = firingRate;
 }
 
 /**

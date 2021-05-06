@@ -137,10 +137,22 @@ void Entity::move(const float x, const float y, sf::Time elapsedTime)
 * to the top left corner of the sprite
 * @return a 2 float vector containing x and y
 */
-sf::Vector2f Entity::getCenter()
+sf::Vector2f Entity::getCenterLocal()
 {
     return sf::Vector2f(this->getTexture().getSize().x / 2.f,
         this->getTexture().getSize().y / 2.f);
+}
+
+/**
+* Produces the x and y coordinates of the center of the entity's sprite relative
+* to the top left corner of the window
+* @return a 2 float vector containing x and y
+*/
+sf::Vector2f Entity::getCenterWindow()
+{
+    sf::Vector2f pos = this->getPosition();
+    return sf::Vector2f(pos.x + this->getTexture().getSize().x / 2.f,
+        pos.y + this->getTexture().getSize().y / 2.f);
 }
 
 /**

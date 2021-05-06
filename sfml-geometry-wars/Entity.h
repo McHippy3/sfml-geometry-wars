@@ -41,7 +41,8 @@ public:
     // Functions
     bool receiveDamage(const int damage);
     void move(const float x, const float y, sf::Time elapsedTime);
-    sf::Vector2f getCenter();
+    sf::Vector2f getCenterLocal();
+    sf::Vector2f getCenterWindow();
 
     // Pure virtual functions
     virtual void update() = 0;

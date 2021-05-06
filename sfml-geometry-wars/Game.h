@@ -8,6 +8,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 
+#include "Bullet.h"
 #include "Enemy.h"
 #include "Player.h"
 
@@ -36,6 +37,7 @@ private:
     sf::Clock deltaClock; //only for framerate
     sf::Time dt;
     sf::Time lastSpawn;
+    sf::Time lastBullet;
     unsigned spawnTimer;
     unsigned score;
     bool mouseHeld;
@@ -43,6 +45,7 @@ private:
     // Game objects
     Player* player;
     std::vector<Enemy*> enemies;
+    std::vector<Bullet*> bullets;
 
     // Init functions
     void initVariables();
@@ -58,12 +61,14 @@ private:
     void updateKeyboardInput();
     void updateMousePositions();
     void updateEnemies();
+    void updateBullets();
     void updateScore();
     void updateUIText();
     void update();
 
     // Render
     void renderEnemies();
+    void renderBullets();
     void renderUIText();
     void render();
 

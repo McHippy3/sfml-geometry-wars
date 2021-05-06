@@ -9,6 +9,7 @@ void Game::initVariables()
     this->player = nullptr;
     this->dt = sf::microseconds(0);
     this->lastSpawn = sf::microseconds(0);
+    this->lastBullet = sf::microseconds(0);
     this->spawnTimer = 5;
     this->score = 0;
     this->mouseHeld = false;
@@ -64,7 +65,7 @@ void Game::initUIText()
 void Game::initPlayer()
 {
     this->player = new Player(0, 0);
-    sf::Vector2f centerPos = player->getCenter();
+    sf::Vector2f centerPos = player->getCenterLocal();
     float x = static_cast<float> (this->window->getSize().x / 2.f
         - centerPos.x);
     float y = static_cast<float> (this->window->getSize().y / 2.f
@@ -96,6 +97,10 @@ Game::~Game()
     for (auto* e : enemies)
     {
         delete e;
+    }
+    for (auto* b : bullets)
+    {
+        delete b;
     }
 }
 
@@ -155,8 +160,7 @@ void Game::updateKeyboardInput()
 }
 
 /**
-* Updates mousePosWindow and mousePosView. Outputs current mouse position to
-* console.
+* Updates mousePosWindow and mousePosView. Spawns bullets when mouse is clicked.
 */
 void Game::updateMousePositions()
 {
@@ -167,8 +171,13 @@ void Game::updateMousePositions()
         if (!this->mouseHeld)
         {
             this->mouseHeld = true;
-            std::cout << "MOUSE_POSITION: " << this->mousePosView.x << " "
-                << this->mousePosView.y << std::endl;
+        }
+        if ((this->clock.getElapsedTime() - this->lastBullet).asMilliseconds()
+            >= static_cast<sf::Int32> (this->player->getFiringRate()))
+        {
+            this->bullets.push_back(new Bullet(this->player->getCenterWindow(),
+                sf::Vector2f(this->mousePosView.x, this->mousePosView.y)));
+            this->lastBullet = this->clock.getElapsedTime();
         }
     }
     else
@@ -249,6 +258,25 @@ void Game::updateEnemies()
 }
 
 /**
+* Updates all the bullets
+*/
+void Game::updateBullets()
+{
+    for (auto* b : bullets)
+    {
+        b->move(this->dt);
+    }
+    for (int i = 0; i < bullets.size(); ++i)
+    {
+        if (bullets[i]->offBounds(*this->window))
+        {
+            bullets.erase(bullets.begin() + i);
+            break;
+        }
+    }
+}
+
+/**
 * Updates the score based on the number of enemies killed
 */
 void Game::updateScore()
@@ -288,6 +316,7 @@ void Game::update()
     this->updateMousePositions();
     this->player->update();
     this->updateEnemies();
+    this->updateBullets();
     this->updateScore();
     this->updateUIText();
 }
@@ -300,6 +329,17 @@ void Game::renderEnemies()
     for (auto* e : enemies)
     {
         e->render(*this->window);
+    }
+}
+
+/**
+* Renders the bullets onto the window
+*/
+void Game::renderBullets()
+{
+    for (auto* b : bullets)
+    {
+        b->render(*this->window);
     }
 }
 
@@ -324,6 +364,7 @@ void Game::render()
 
     this->player->render(*this->window);
     this->renderEnemies();
+    this->renderBullets();
     this->renderUIText();
 
     this->window->display();
