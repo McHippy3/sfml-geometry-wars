@@ -7,6 +7,7 @@ void Player::initVariables()
 {
     this->setHP(5);
     this->setMovementSpeed(0.5);
+    this->damage = 5;
     this->firingRate = 100;
 }
 
@@ -35,6 +36,14 @@ Player::Player(float x, float y)
 */
 Player::~Player()
 {
+}
+
+/**
+* @return the damage that the player deals
+*/
+unsigned Player::getDamage()
+{
+    return this->damage;
 }
 
 /**

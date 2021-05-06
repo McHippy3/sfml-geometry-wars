@@ -62,7 +62,7 @@ private:
     void updateMousePositions();
     void updateEnemies();
     void updateBullets();
-    void updateScore();
+    void updateScore(unsigned points);
     void updateUIText();
     void update();
 

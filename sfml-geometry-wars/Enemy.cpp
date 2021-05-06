@@ -10,14 +10,17 @@ void Enemy::initVariables()
     case Enemy::EnemyType::BASIC:
         this->setHP(10);
         this->setMovementSpeed(0.1f);
+        this->pointValue = 10;
         break;
     case Enemy::EnemyType::ADVANCED:
         this->setHP(30);
         this->setMovementSpeed(0.2f);
+        this->pointValue = 20;
         break;
     case Enemy::EnemyType::BOSS:
         this->setHP(100);
         this->setMovementSpeed(0.1f);
+        this->pointValue = 100;
         break;
     default:
         std::cout << "ERROR::ENEMY::INITVARIABLES::Invalid enemyType." << "\n";
@@ -91,6 +94,14 @@ void Enemy::moveTowardsPos(sf::Vector2f pos, sf::Time elapsedTime)
         y--;
     }
     this->move(x, y, elapsedTime);
+}
+
+/**
+* @return the enemy's pointValue
+*/
+unsigned Enemy::getPointValue()
+{
+    return this->pointValue;
 }
 
 /**

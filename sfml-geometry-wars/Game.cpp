@@ -10,7 +10,7 @@ void Game::initVariables()
     this->dt = sf::microseconds(0);
     this->lastSpawn = sf::microseconds(0);
     this->lastBullet = sf::microseconds(0);
-    this->spawnTimer = 5;
+    this->spawnTimer = 1;
     this->score = 0;
     this->mouseHeld = false;
 }
@@ -176,7 +176,8 @@ void Game::updateMousePositions()
             >= static_cast<sf::Int32> (this->player->getFiringRate()))
         {
             this->bullets.push_back(new Bullet(this->player->getCenterWindow(),
-                sf::Vector2f(this->mousePosView.x, this->mousePosView.y)));
+                sf::Vector2f(this->mousePosView.x, this->mousePosView.y),
+                this->player->getDamage()));
             this->lastBullet = this->clock.getElapsedTime();
         }
     }
@@ -274,9 +275,13 @@ void Game::updateBullets()
             if (enemies[j]->getSprite().getGlobalBounds().intersects(
                 bullets[i]->getCircle().getGlobalBounds()))
             {
-                enemies.erase(enemies.begin() + j);
                 deleted = true;
-                break;
+                if (!enemies[j]->receiveDamage(bullets[i]->getDamage()))
+                {
+                    updateScore(enemies[j]->getPointValue());
+                    enemies.erase(enemies.begin() + j);
+                    break;
+                }
             }
         }
         // Check for out of bounds
@@ -300,11 +305,12 @@ void Game::updateBullets()
 }
 
 /**
-* Updates the score based on the number of enemies killed
+* Updates the score
+* @param points number of points to be added to the score
 */
-void Game::updateScore()
+void Game::updateScore(unsigned points)
 {
-    // TODO
+    this->score += points;
 }
 
 /**
@@ -340,7 +346,6 @@ void Game::update()
     this->player->update();
     this->updateEnemies();
     this->updateBullets();
-    this->updateScore();
     this->updateUIText();
 }
 

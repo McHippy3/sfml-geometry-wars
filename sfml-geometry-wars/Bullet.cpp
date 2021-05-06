@@ -3,8 +3,9 @@
 /**
 * Initializes variables (excl. moveX, moveY)
 */
-void Bullet::initVariables()
+void Bullet::initVariables(unsigned damage)
 {
+    this->damage = damage;
     this->movementSpeed = 1.5;
     this->radius = 5;
 }
@@ -61,9 +62,9 @@ void Bullet::initCircle(sf::Vector2f startPos)
 * @param startPos the starting point of the bullet
 * @param target the point that the bullet will move towards
 */
-Bullet::Bullet(sf::Vector2f startPos, sf::Vector2f target)
+Bullet::Bullet(sf::Vector2f startPos, sf::Vector2f target, unsigned damage)
 {
-    this->initVariables();
+    this->initVariables(damage);
     this->initMoveXY(startPos, target);
     this->initCircle(startPos);
 }
@@ -81,6 +82,14 @@ Bullet::~Bullet()
 sf::CircleShape Bullet::getCircle()
 {
     return this->circle;
+}
+
+/**
+* @return damage
+*/
+unsigned Bullet::getDamage()
+{
+    return this->damage;
 }
 
 /**

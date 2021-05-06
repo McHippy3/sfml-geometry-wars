@@ -9,6 +9,7 @@ class Player :
 {
 private:
     // Variables
+    unsigned damage;
     unsigned firingRate; // milliseconds
 
     // Initializers
@@ -21,11 +22,13 @@ public:
     virtual ~Player();
 
     // Accessors
+    unsigned getDamage();
     unsigned getFiringRate();
 
     // Modifiers
     void setFiringRate(unsigned firingRate);
 
     // Functions
+    void upgrade();
     void update();
 };
