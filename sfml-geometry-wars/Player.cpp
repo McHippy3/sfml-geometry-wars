@@ -63,6 +63,13 @@ void Player::setFiringRate(unsigned firingRate)
 }
 
 /**
+* Upgrades the player. Increases firing rate and damage
+*/
+void Player::upgrade()
+{
+}
+
+/**
 * Updates the Player object
 */
 void Player::update()

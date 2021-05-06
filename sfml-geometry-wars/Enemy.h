@@ -19,14 +19,15 @@ private:
     // Variables
     unsigned pointValue;
     Enemy::EnemyType enemyType;
+    unsigned stage;
 
     // Initializers
-    void initVariables();
+    void initVariables(unsigned stage);
     void initSprite();
 
 public:
     // Constructor / Destructor
-    Enemy(float x, float y, Enemy::EnemyType et);
+    Enemy(float x, float y, Enemy::EnemyType et, unsigned stage);
     virtual ~Enemy();
 
     // Accessors

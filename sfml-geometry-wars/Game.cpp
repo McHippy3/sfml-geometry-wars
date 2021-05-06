@@ -9,9 +9,12 @@ void Game::initVariables()
     this->player = nullptr;
     this->dt = sf::microseconds(0);
     this->lastSpawn = sf::microseconds(0);
+    this->lastEnemyUpgrade = sf::microseconds(0);
     this->lastBullet = sf::microseconds(0);
     this->spawnTimer = 1;
     this->score = 0;
+    this->enemyStage = 0;
+    this->enemyUpgradeTime = 3;
     this->mouseHeld = false;
 }
 
@@ -188,9 +191,11 @@ void Game::updateMousePositions()
 }
 
 /**
-* Updates enemies. Spawns enemies according to timer. Removes enemies with no
-* hp. Checks to see if player made contact with any enemies and thus should
-* receive damage.
+* Updates enemies
+* - Spawns enemies
+* - Removes dead enemies
+* - Checks for player contact with enemies
+* - Upgrade enemies
 */
 void Game::updateEnemies()
 {
@@ -199,7 +204,7 @@ void Game::updateEnemies()
         >= spawnTimer)
     {
         Enemy::EnemyType et = static_cast<Enemy::EnemyType> (rand() % 3);
-        Enemy* e = new Enemy(0, 0, et);
+        Enemy* e = new Enemy(0, 0, et, this->enemyStage);
         float x = static_cast<float> (rand() % static_cast<int>
             (this->window->getSize().x));
         float y = static_cast<float> (rand() % static_cast<int>
@@ -256,6 +261,13 @@ void Game::updateEnemies()
     {
         this->enemies[i]->moveTowardsPos(this->player->getPosition(), this->dt);
     }
+
+    if ((this->clock.getElapsedTime() - this->lastEnemyUpgrade).asSeconds()
+        >= this->enemyUpgradeTime)
+    {
+        ++this->enemyStage;
+        this->lastEnemyUpgrade = this->clock.getElapsedTime();
+    }
 }
 
 /**
@@ -279,6 +291,7 @@ void Game::updateBullets()
                 if (!enemies[j]->receiveDamage(bullets[i]->getDamage()))
                 {
                     updateScore(enemies[j]->getPointValue());
+                    delete enemies[j];
                     enemies.erase(enemies.begin() + j);
                     break;
                 }
@@ -300,7 +313,10 @@ void Game::updateBullets()
     int removedCount = 0;
     for (int i = 0; i < removeList.size(); ++i)
     {
-        bullets.erase(bullets.begin() + i - removedCount);
+        int actualIndex = i - removedCount;
+        delete bullets[actualIndex];
+        bullets.erase(bullets.begin() + actualIndex);
+        ++removedCount;
     }
 }
 

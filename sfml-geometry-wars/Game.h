@@ -37,9 +37,12 @@ private:
     sf::Clock deltaClock; //only for framerate
     sf::Time dt;
     sf::Time lastSpawn;
+    sf::Time lastEnemyUpgrade;
     sf::Time lastBullet;
     unsigned spawnTimer;
     unsigned score;
+    unsigned enemyStage;
+    int enemyUpgradeTime; // seconds
     bool mouseHeld;
 
     // Game objects

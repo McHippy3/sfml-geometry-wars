@@ -3,23 +3,26 @@
 /**
 * Initializes variables. Sets health and movementSpeed based on enemyType
 */
-void Enemy::initVariables()
+void Enemy::initVariables(unsigned stage)
 {
+    this->stage = stage;
+    float speedBonus = 0.03f * stage;
+    int healthBonus = 5 * stage;
     switch (this->enemyType)
     {
     case Enemy::EnemyType::BASIC:
-        this->setHP(10);
-        this->setMovementSpeed(0.1f);
+        this->setHP(10 + healthBonus);
+        this->setMovementSpeed(0.1f + speedBonus);
         this->pointValue = 10;
         break;
     case Enemy::EnemyType::ADVANCED:
-        this->setHP(30);
-        this->setMovementSpeed(0.2f);
+        this->setHP(30 + healthBonus);
+        this->setMovementSpeed(0.2f + speedBonus);
         this->pointValue = 20;
         break;
     case Enemy::EnemyType::BOSS:
-        this->setHP(100);
-        this->setMovementSpeed(0.1f);
+        this->setHP(100 + healthBonus);
+        this->setMovementSpeed(0.1f + speedBonus);
         this->pointValue = 100;
         break;
     default:
@@ -48,14 +51,13 @@ void Enemy::initSprite()
     }
 }
 
-
 /**
 * Constructs an Enemy object
 */
-Enemy::Enemy(float x, float y, Enemy::EnemyType et)
+Enemy::Enemy(float x, float y, Enemy::EnemyType et, unsigned stage)
 {
     this->enemyType = et;
-    this->initVariables();
+    this->initVariables(stage);
     this->initSprite();
     this->setPosition(x, y);
 }
