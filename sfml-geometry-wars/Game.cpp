@@ -357,7 +357,7 @@ void Game::updateUIText()
 void Game::update()
 {
     this->updateSFMLEvents();
-    this->updateKeyboardInput();
+    //this->updateKeyboardInput();
     this->updateMousePositions();
     this->player->update();
     this->updateEnemies();
