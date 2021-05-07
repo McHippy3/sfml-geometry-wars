@@ -5,8 +5,6 @@
 */
 void Game::initVariables()
 {
-    this->window = nullptr;
-    this->player = nullptr;
     this->dt = sf::microseconds(0);
     this->lastSpawn = sf::microseconds(0);
     this->lastEnemyUpgrade = sf::microseconds(0);
@@ -26,8 +24,8 @@ void Game::initWindow()
     this->videoMode.width = Game::screenWidth;
     this->videoMode.height = Game::screenHeight;
 
-    this->window = new sf::RenderWindow(this->videoMode, "Geometry Wars",
-        sf::Style::Titlebar | sf::Style::Close);
+    this->window.reset(new sf::RenderWindow(this->videoMode, "Geometry Wars",
+        sf::Style::Titlebar | sf::Style::Close));
 
     this->window->setFramerateLimit(60);
 }
@@ -67,7 +65,7 @@ void Game::initUIText()
 */
 void Game::initPlayer()
 {
-    this->player = new Player(0, 0);
+    this->player.reset(new Player(0, 0));
     sf::Vector2f centerPos = player->getCenterLocal();
     float x = static_cast<float> (this->window->getSize().x / 2.f
         - centerPos.x);
@@ -95,16 +93,6 @@ Game::Game()
 */
 Game::~Game()
 {
-    delete this->window;
-    delete this->player;
-    for (auto* e : enemies)
-    {
-        delete e;
-    }
-    for (auto* b : bullets)
-    {
-        delete b;
-    }
 }
 
 /**
@@ -178,9 +166,9 @@ void Game::updateMousePositions()
         if ((this->clock.getElapsedTime() - this->lastBullet).asMilliseconds()
             >= static_cast<sf::Int32> (this->player->getFiringRate()))
         {
-            this->bullets.push_back(new Bullet(this->player->getCenterWindow(),
+            this->bullets.push_back(std::unique_ptr<Bullet> (new Bullet(this->player->getCenterWindow(),
                 sf::Vector2f(this->mousePosView.x, this->mousePosView.y),
-                this->player->getDamage()));
+                this->player->getDamage())));
             this->lastBullet = this->clock.getElapsedTime();
         }
     }
@@ -204,7 +192,7 @@ void Game::updateEnemies()
         >= spawnTimer)
     {
         Enemy::EnemyType et = static_cast<Enemy::EnemyType> (rand() % 3);
-        Enemy* e = new Enemy(0, 0, et, this->enemyStage);
+        std::unique_ptr<Enemy> e (new Enemy(0, 0, et, this->enemyStage));
         float x = static_cast<float> (rand() % static_cast<int>
             (this->window->getSize().x));
         float y = static_cast<float> (rand() % static_cast<int>
@@ -237,7 +225,7 @@ void Game::updateEnemies()
                 << "\n";
         }
         e->setPosition(x, y);
-        this->enemies.push_back(e);
+        this->enemies.push_back(std::move(e));
         this->lastSpawn = this->clock.getElapsedTime();
     }
 
@@ -291,7 +279,6 @@ void Game::updateBullets()
                 if (!enemies[j]->receiveDamage(bullets[i]->getDamage()))
                 {
                     updateScore(enemies[j]->getPointValue());
-                    delete enemies[j];
                     enemies.erase(enemies.begin() + j);
                     break;
                 }
@@ -314,7 +301,6 @@ void Game::updateBullets()
     for (int i = 0; i < removeList.size(); ++i)
     {
         int actualIndex = i - removedCount;
-        delete bullets[actualIndex];
         bullets.erase(bullets.begin() + actualIndex);
         ++removedCount;
     }
@@ -357,7 +343,7 @@ void Game::updateUIText()
 void Game::update()
 {
     this->updateSFMLEvents();
-    //this->updateKeyboardInput();
+    this->updateKeyboardInput();
     this->updateMousePositions();
     this->player->update();
     this->updateEnemies();
@@ -370,9 +356,9 @@ void Game::update()
 */
 void Game::renderEnemies()
 {
-    for (auto* e : enemies)
+    for (int i = 0; i < enemies.size(); ++i)
     {
-        e->render(*this->window);
+        enemies[i]->render(*this->window);
     }
 }
 
@@ -381,9 +367,9 @@ void Game::renderEnemies()
 */
 void Game::renderBullets()
 {
-    for (auto* b : bullets)
+    for (int i = 0; i < bullets.size(); ++i)
     {
-        b->render(*this->window);
+        bullets[i]->render(*this->window);
     }
 }
 

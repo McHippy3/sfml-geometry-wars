@@ -17,7 +17,7 @@ class Game
 private:
     // Variables
     // Window
-    sf::RenderWindow* window;
+    std::unique_ptr<sf::RenderWindow> window;
     sf::VideoMode videoMode;
     sf::Event ev;
 
@@ -46,9 +46,9 @@ private:
     bool mouseHeld;
 
     // Game objects
-    Player* player;
-    std::vector<Enemy*> enemies;
-    std::vector<Bullet*> bullets;
+    std::unique_ptr<Player> player;
+    std::vector<std::unique_ptr<Enemy>> enemies;
+    std::vector<std::unique_ptr<Bullet>> bullets;
 
     // Init functions
     void initVariables();
